@@ -1,4 +1,7 @@
 import { Hero } from "@/components/ui/animated-hero";
+import { Header } from "@/components/ui/header";
+import { Features } from "@/components/ui/features";
+
 
 export default function Home() {
   return (
@@ -6,7 +9,9 @@ export default function Home() {
 
       {/* Animated Hero Section */}
       <Hero />
-
+      <Header />
+      <Features />
+     
     </div>
   );
 }

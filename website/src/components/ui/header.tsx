@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,26 +13,29 @@ import { Menu, X, Code, Github } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 
+type NavigationItem = {
+  name: string;
+  href?: string;
+  description?: string;
+  items?: NavigationItem[];
+};
+
 function Header() {
   const [isOpen, setOpen] = useState(false);
 
-  const navigationItems = [
-    { name: 'Features', href: '#features' },
-    { name: 'Pricing', href: '#pricing' },
-    { 
-      name: 'Documentation', 
-      items: [
-        { name: 'Getting Started', href: '/docs/getting-started' },
-        { name: 'API Reference', href: '/docs/api' },
-        { name: 'Guides', href: '/docs/guides' },
-      ]
+  const navigationItems: NavigationItem[] = [
+    {
+      name: 'Features',
+      href: '#features',
+      description: 'Discover powerful features of LGTM Bot for code reviews'
     },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b border-black/10 dark:border-white/10">
+    // --- Made the header more transparent ---
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/30 dark:bg-black/30 backdrop-blur-xl border-b border-white/10 dark:border-black/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex min-h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
@@ -52,7 +54,7 @@ function Header() {
                   <NavigationMenuItem key={item.name}>
                     {item.items ? (
                       <>
-                        <NavigationMenuTrigger className="bg-transparent hover:bg-transparent data-[state=open]:bg-transparent text-black dark:text-white hover:text-black/80 dark:hover:text-white/80">
+                        <NavigationMenuTrigger className="bg-transparent hover:bg-black/5 dark:hover:bg-white/10 data-[state=open]:bg-black/5 dark:data-[state=open]:bg-white/10 text-black dark:text-white">
                           {item.name}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
@@ -61,14 +63,14 @@ function Header() {
                               <li key={subItem.name}>
                                 <NavigationMenuLink asChild>
                                   <Link
-                                    href={subItem.href}
+                                    href={subItem.href!}
                                     className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-black/5 dark:hover:bg-white/10"
                                   >
                                     <div className="text-sm font-medium leading-none text-black dark:text-white">
                                       {subItem.name}
                                     </div>
                                     <p className="line-clamp-2 text-sm leading-snug text-black/60 dark:text-white/60">
-                                      {subItem.description || ''}
+                                      {subItem.description}
                                     </p>
                                   </Link>
                                 </NavigationMenuLink>
@@ -78,11 +80,11 @@ function Header() {
                         </NavigationMenuContent>
                       </>
                     ) : (
-                      <Link href={item.href} legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      <NavigationMenuLink asChild>
+                        <Link href={item.href!} className={navigationMenuTriggerStyle()}>
                           {item.name}
-                        </NavigationMenuLink>
-                      </Link>
+                        </Link>
+                      </NavigationMenuLink>
                     )}
                   </NavigationMenuItem>
                 ))}
@@ -91,23 +93,13 @@ function Header() {
 
             <div className="ml-4 flex items-center space-x-2">
               <a
-                href="https://github.com/yourusername/lgtm-bot"
+                href="https://github.com/Hrithik-Gavankar/lgtm-bot"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 text-black/70 hover:text-black dark:text-white/70 dark:hover:text-white transition-colors"
               >
                 <Github className="h-5 w-5" />
               </a>
-              <Link href="/login">
-                <Button variant="outline" size="sm" className="border-black/20 dark:border-white/20">
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/signup">
-                <Button size="sm" className="bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90">
-                  Get Started
-                </Button>
-              </Link>
             </div>
           </nav>
 
@@ -126,7 +118,8 @@ function Header() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden bg-white dark:bg-black border-t border-black/10 dark:border-white/10">
+        // --- Made the mobile menu more transparent ---
+        <div className="md:hidden bg-white/30 dark:bg-black/30 backdrop-blur-xl border-t border-white/10 dark:border-black/10">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navigationItems.map((item) => (
               <div key={item.name} className="px-3 py-2">
@@ -139,38 +132,34 @@ function Header() {
                       {item.items.map((subItem) => (
                         <Link
                           key={subItem.name}
-                          href={subItem.href}
+                          href={subItem.href!}
                           className="block px-3 py-2 text-black/70 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/10 rounded-md"
                           onClick={() => setOpen(false)}
                         >
-                          {subItem.name}
+                          <div className="font-medium">{subItem.name}</div>
+                          <p className="text-sm text-black/60 dark:text-white/60">
+                            {subItem.description}
+                          </p>
                         </Link>
                       ))}
                     </div>
                   </div>
                 ) : (
                   <Link
-                    href={item.href}
+                    href={item.href!}
                     className="block px-3 py-2 text-black/70 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/10 rounded-md"
                     onClick={() => setOpen(false)}
                   >
-                    {item.name}
+                    <div className="font-medium">{item.name}</div>
+                    {item.description && (
+                      <p className="text-sm text-black/60 dark:text-white/60">
+                        {item.description}
+                      </p>
+                    )}
                   </Link>
                 )}
               </div>
             ))}
-            <div className="px-3 pt-2 pb-3 space-y-2 border-t border-black/10 dark:border-white/10 mt-2">
-              <Link href="/login" className="block w-full">
-                <Button variant="outline" className="w-full justify-center" onClick={() => setOpen(false)}>
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/signup" className="block w-full">
-                <Button className="w-full justify-center bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90" onClick={() => setOpen(false)}>
-                  Get Started
-                </Button>
-              </Link>
-            </div>
           </div>
         </div>
       )}
@@ -179,3 +168,4 @@ function Header() {
 }
 
 export { Header };
+

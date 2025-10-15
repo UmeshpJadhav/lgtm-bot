@@ -2,20 +2,17 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { MoveRight, Github, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
+import { MoveRight } from "lucide-react";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 
 function Hero() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(
-    () => ["Better", "Faster", "Smarter", "Cleaner", "Safer"],
+    () => ["smarter", "faster", "AI-driven", "secure", "streamlined"],
     []
   );
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const timeoutId = setTimeout(() => {
       if (titleNumber === titles.length - 1) {
         setTitleNumber(0);
@@ -27,37 +24,38 @@ function Hero() {
   }, [titleNumber, titles]);
 
   return (
-    <div className="w-full bg-white dark:bg-black min-h-screen flex items-center">
-      <div className="container mx-auto px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-center text-center space-y-8 max-w-5xl mx-auto">
-          {/* Badge */}
-          <div className="mb-4">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="gap-2 bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-gray-200 dark:border-gray-800 hover:bg-gray-200 dark:hover:bg-gray-800"
-            >
-              <Zap className="w-4 h-4" />
-              AI-Powered Code Review
-            </Button>
+    <div className="w-full relative">
+      {/* Enhanced radial gradient background with more visible blue tones */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.1)_0%,rgba(59,130,246,0.05)_50%,transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.15)_0%,rgba(59,130,246,0.08)_50%,transparent_70%)] pointer-events-none"></div>
+      
+      <div className="container mx-auto relative z-10">
+        <div className="flex gap-8 py-24 lg:py-40 items-center justify-center flex-col">
+          <div>
+            <HoverBorderGradient className="gap-4">
+              <div className="flex items-center">
+                AI-Powered Code Review <MoveRight className="w-5 h-5 ml-2" />
+              </div>
+            </HoverBorderGradient>
           </div>
-
-          {/* Main Headline */}
-          <div className="space-y-2">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight">
-              <div className="text-black dark:text-white">Ship</div>
-              <div className="relative h-16 md:h-20 lg:h-24 flex items-center justify-center overflow-visible">
+          <div className="flex gap-4 flex-col">
+            <h1 className="text-6xl md:text-8xl max-w-2xl tracking-tighter text-center font-regular">
+              <span className="text-spektr-cyan-50">Automated PR Reviews,</span>
+              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1">
+                &nbsp;
                 {titles.map((title, index) => (
                   <motion.span
                     key={index}
-                    className="absolute font-bold text-black dark:text-white"
-                    initial={{ opacity: 0, y: "-100%" }}
-                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                    className="absolute font-semibold"
+                    initial={{ opacity: 0, y: "-100" }}
+                    transition={{ type: "spring", stiffness: 50 }}
                     animate={
                       titleNumber === index
-                        ? { y: 0, opacity: 1 }
+                        ? {
+                            y: 0,
+                            opacity: 1,
+                          }
                         : {
-                            y: titleNumber > index ? "-100%" : "100%",
+                            y: titleNumber > index ? -150 : 150,
                             opacity: 0,
                           }
                     }
@@ -65,40 +63,12 @@ function Hero() {
                     {title}
                   </motion.span>
                 ))}
-              </div>
-              <div className="text-gray-600 dark:text-gray-400">Code</div>
+              </span>
             </h1>
-          </div>
 
-          {/* Subheadline */}
-          <div className="max-w-3xl mx-auto">
-            <p className="text-xl md:text-2xl leading-relaxed text-gray-600 dark:text-gray-400">
-              Connect Jira tickets to GitHub PRs for intelligent, automated code
-              reviews.{" "}
-              <span className="font-semibold text-black dark:text-white">
-                Save 80% of review time
-              </span>{" "}
-              while improving code quality.
+            <p className="text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
+              LGTM Bot connects GitHub and Jira to provide AI-powered reviews, objective scoring, and actionable feedback on every pull request. Boost code quality and ship with confidence locally or in CI/CD.
             </p>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Button
-              size="lg"
-              className="gap-2 bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
-              variant="default"
-            >
-              Get Started Free <MoveRight className="w-5 h-5" />
-            </Button>
-            <Button
-              size="lg"
-              className="gap-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 px-8 py-4 text-lg font-semibold"
-              variant="outline"
-            >
-              <Github className="w-5 h-5" />
-              View on GitHub
-            </Button>
           </div>
         </div>
       </div>
